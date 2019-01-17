@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue.js</title>
+    <style>
+      #app {
+        font-family: "Avenir", Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #2c3e50;
+        margin-top: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Vue.js</h1>
+    <div id="app">
+      <h2>App</h2>
+      <ul>
+        <li v-for="(p, index) in products">
+          {{ p.name }}
+          <button v-on:click="removeThis(index)">Delete item</button>
+        </li>
+      </ul>
+      <p v-if="!products.length">No products</p>
+
+      <form v-on:submit.prevent="addNewProducts">
+        <input
+          v-model="newProductText"
+          id="new-product"
+          placeholder="E.g. Corrots"
+        />
+        <button>Add</button>
+      </form>
+
+      <button v-on:click="addToList">Add item to list</button>
+      <button v-on:click="removeLast">Delete last item</button>
+      <ul>
+        <li></li>
+      </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <script>
+      const app = new Vue({
+        el: "#app",
+        data: {
+          products: [
+            {
+              id: 0,
+              name: "Coffee"
+            },
+            {
+              id: 1,
+              name: "Pizza"
+            }
+          ],
+          nextProductID: 2
+        },
+        methods: {
+          removeLast() {
+            this.products.pop();
+          },
+          addToList: function() {
+            this.products.push({
+              id: this.nextProductID++,
+              name: "ProductX"
+            });
+          },
+          removeThis: function(index) {
+            console.log(index);
+            this.products.splice(index, 1);
+          },
+          addNewProducts: function() {
+            this.products.push({
+              id: this.nextProductId++,
+              name: this.newProductText
+            });
+            this.newProductText = "";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
