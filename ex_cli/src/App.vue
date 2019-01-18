@@ -1,26 +1,19 @@
 <template>
   <div id="app">
     <product-list :products="products"></product-list>
-    <form @submit.prevent="onSubmit()">
-      <input name="product" v-model="newProductName" v-validate="'required|min:3'">
-      <button>Add</button>
-      {{ msg }}
-      <div v-show="errors.has('product')">{{ errors.first('product') }}</div>
-    </form>
-    <ul>
-      <li v-for="p in products" :key="p.id">{{ p.name }}</li>
-    </ul>
-    <p v-if="!products.length">No products!</p>
+    <add-product @add-product="onAddProduct"></add-product>
   </div>
 </template>
 
 <script>
 import ProductList from "./components/ProductList";
+import AddProduct from "./components/AddProduct";
 
 export default {
   name: "App",
   components: {
-    ProductList
+    ProductList,
+    AddProduct
   },
   data() {
     return {
@@ -34,23 +27,15 @@ export default {
           id: 1,
           name: "Apple"
         }
-      ],
-      newProductId: 2,
-      newProductName: ""
+      ]
+      // ,
+      // newProductId: 2,
+      // newProductName: ""
     };
   },
   methods: {
-    onSubmit() {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          this.products.push({
-            id: this.newProductId++,
-            name: this.newProductName
-          });
-          this.newProductName = "";
-          this.$validator.reset();
-        }
-      });
+    onAddProduct(product) {
+      this.products.push(product);
     }
   }
 };
